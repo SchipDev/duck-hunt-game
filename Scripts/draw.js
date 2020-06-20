@@ -1,0 +1,121 @@
+/************Global Variables****************/
+let canvas = document.querySelector('.canvas');
+let context = canvas.getContext("2d");
+let scale = 10;
+const rows = canvas.height / scale;
+const columns = canvas.width / scale;
+let directions = ['n', 's', 'e', 'w']
+let scoreBoard = document.querySelector('#scoreboard')
+
+// ========= Audio References
+let mainMusic = document.getElementById("music-main")
+mainMusic.loop = true
+mainMusic.volume = 0.2
+let ds1 = document.querySelector('#duck-sound1')
+ds1.loop = true
+let shot = document.querySelector('#shot')
+
+// ========= Graphical References
+let spriteSheet = new Image()
+spriteSheet.src = 'Images/duckhunt_various_sheet.png'
+
+// ========= Screen References and scoring/difficulty
+let difficulty = 1     // Difficult initialized to 1, allowing one duck on screen at the beginning
+let ducksOnScreen = []
+let score = 0
+/**************************************************/
+
+
+
+/************Calculation Functions****************/
+/*
+ * Returns a vector containing the mouses current position realitive to the canvas
+ * Param: evt - mouse position event
+*/
+function getMousePos(evt) {
+    var rect = canvas.getBoundingClientRect();
+    return [evt.clientX - rect.left, evt.clientY - rect.top]
+}
+
+function convertMousePos(event) {
+    let mp = getMousePos(event)
+    let convX = Math.floor(mp[0] / scale)
+    let convY = Math.floor(mp[1] / scale)
+    return [convX, convY]
+}
+
+function checkHit(duck, event) {
+    let mousePos = convertMousePos(event)
+    let colX = duck.colliderX()
+    let colY = duck.colliderY()
+    return ((mousePos[0] >= colX[0]) && (mousePos[0] <= colX[1]) && (mousePos[1] >= colY[0]) && (mousePos[1] <= colY[1]))
+}
+
+function generateDucks() {
+    if (ducksOnScreen.length == 0) {
+        ducksOnScreen.push(new Duck())
+        ducksOnScreen.push(new Duck())
+    }
+}
+
+/**************************************************/
+
+
+
+
+
+
+function startGame() {
+    generateDucks()
+    ducksOnScreen.forEach(function (elem) {
+        elem.draw()
+    })
+    mainMusic.play()
+    window.setInterval(() => {
+        ducksOnScreen.forEach(function (elem) {
+            if (!elem.isDead) {
+                elem.clear()
+                elem.move()
+                elem.draw()
+            }
+        })
+        ducksOnScreen = ducksOnScreen.filter(duck => !duck.isDead)
+        generateDucks()
+    }, 50);
+}
+
+
+
+
+
+
+let isStarted = false;
+window.addEventListener('keydown', function (e) {
+    if (e.keyCode == 32) {
+        if (!isStarted) {
+            isStarted = true
+            startGame()
+            document.querySelector('#start').innerHTML = ''
+        }
+    }
+})
+
+
+
+
+canvas.addEventListener('click', function (event) {
+    shot.play()
+    ducksOnScreen.forEach(function (elem) {
+        if (checkHit(elem, event)) {
+            elem.damage(1)
+        }
+        scoreBoard.innerHTML = score
+    })
+})
+
+
+
+
+
+
+

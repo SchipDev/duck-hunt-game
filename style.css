@@ -1,0 +1,29 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('Images/wood 2.jpg');
+}
+
+.canvas {
+    background-image: url("Images/drawisland.png");
+    background-repeat: no-repeat;
+    background-size: 1100px 500px;
+}
+
+#start {
+    color: white;
+    font-size: 40px;
+    text-align: center;
+}
+
+#scoreboard {
+    border-style: ridge;
+    border-color: burlywood;
+    border-width: 10px;
+    padding: 10px 10px 10px 10px;
+    margin: 10px 10px 10px 10px;
+    font-size: 30px;
+}
+
+
