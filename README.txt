@@ -1,7 +1,7 @@
 
 
 ---------------------Currently Doing-----------------------
-    Making 2 ducks spawn on screen at a time and when they are killed spawning new ones
+    Adding a loss condition based on how many times the duck bounces off the edge of the screen
 
 
 ---------- To Do -----------------------

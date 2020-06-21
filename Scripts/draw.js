@@ -28,6 +28,7 @@ let score = 0
 
 
 /************Calculation Functions****************/
+
 /*
  * Returns a vector containing the mouses current position realitive to the canvas
  * Param: evt - mouse position event
@@ -37,6 +38,10 @@ function getMousePos(evt) {
     return [evt.clientX - rect.left, evt.clientY - rect.top]
 }
 
+/*
+ * Gets the current mouse position on the canvas and returns a vector containing the mouse position
+ * realitive to the grid. 
+*/
 function convertMousePos(event) {
     let mp = getMousePos(event)
     let convX = Math.floor(mp[0] / scale)
@@ -44,6 +49,9 @@ function convertMousePos(event) {
     return [convX, convY]
 }
 
+/* 
+ * Returns true if the mouse position is within the ducks collider region
+*/
 function checkHit(duck, event) {
     let mousePos = convertMousePos(event)
     let colX = duck.colliderX()
@@ -51,6 +59,9 @@ function checkHit(duck, event) {
     return ((mousePos[0] >= colX[0]) && (mousePos[0] <= colX[1]) && (mousePos[1] >= colY[0]) && (mousePos[1] <= colY[1]))
 }
 
+/* 
+ * If there are no ducks on screen, pushes 2 new ducks into the ducksOnScreen array
+*/
 function generateDucks() {
     if (ducksOnScreen.length == 0) {
         ducksOnScreen.push(new Duck())
@@ -63,6 +74,7 @@ function generateDucks() {
 
 
 
+/************GamePlay Loop****************/
 
 
 function startGame() {
@@ -83,10 +95,12 @@ function startGame() {
         generateDucks()
     }, 50);
 }
+/**************************************************/
 
 
 
 
+/************Event Listeners****************/
 
 
 let isStarted = false;
@@ -100,9 +114,6 @@ window.addEventListener('keydown', function (e) {
     }
 })
 
-
-
-
 canvas.addEventListener('click', function (event) {
     shot.play()
     ducksOnScreen.forEach(function (elem) {
@@ -112,6 +123,7 @@ canvas.addEventListener('click', function (event) {
         scoreBoard.innerHTML = score
     })
 })
+/**************************************************/
 
 
 

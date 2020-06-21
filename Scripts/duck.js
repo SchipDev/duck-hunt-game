@@ -10,6 +10,7 @@ class Duck {
         this.isDead = false;
         this.spriteWidth = scale/2
         this.spriteHeight = scale/2
+        this.numBounces = 0
         this.pickPositionStart()
         this.pickVelocity()
     }
@@ -38,6 +39,8 @@ class Duck {
         else if (axis === 'x'){
             this.velocityX = -this.velocityX
         }
+        this.numBounces++
+        console.log(this.numBounces)
     }
 
     move = function() {
