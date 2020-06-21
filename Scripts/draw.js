@@ -23,6 +23,7 @@ spriteSheet.src = 'Images/duckhunt_various_sheet.png'
 let difficulty = 1     // Difficult initialized to 1, allowing one duck on screen at the beginning
 let ducksOnScreen = []
 let score = 0
+let hasLost = false
 /**************************************************/
 
 
@@ -89,10 +90,15 @@ function startGame() {
                 elem.clear()
                 elem.move()
                 elem.draw()
+                if (elem.numBounces >= 5) {
+                    hasLost = true;
+                }
             }
         })
         ducksOnScreen = ducksOnScreen.filter(duck => !duck.isDead)
+        if (hasLost) {location.reload()}
         generateDucks()
+
     }, 50);
 }
 /**************************************************/
