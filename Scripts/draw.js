@@ -6,6 +6,7 @@ const rows = canvas.height / scale;
 const columns = canvas.width / scale;
 let directions = ['n', 's', 'e', 'w']
 let scoreBoard = document.querySelector('#scoreboard')
+let lives = document.querySelector('#lives')
 
 // ========= Audio References
 let mainMusic = document.getElementById("music-main")
@@ -24,6 +25,7 @@ let difficulty = 1     // Difficult initialized to 1, allowing one duck on scree
 let ducksOnScreen = []
 let score = 0
 let hasLost = false
+let numLives = 3
 /**************************************************/
 
 
@@ -91,15 +93,17 @@ function startGame() {
                 elem.clear()
                 elem.move()
                 elem.draw()
-                if (elem.numBounces >= elem.allowedBounces) {
-                    hasLost = true;
+                if (elem.numBounces >= elem.allowedBounces && !elem.hasEscaped) {
+                    elem.escape()
+                    lives.innerHTML = numLives
                 }
             }
         })
         ducksOnScreen = ducksOnScreen.filter(duck => !duck.isDead)
+        ducksOnScreen = ducksOnScreen.filter(duck => !duck.hasEscaped)
+        if (numLives <= 0) {hasLost = true}
         if (hasLost) {location.reload()}
         generateDucks()
-
     }, 50);
 }
 /**************************************************/

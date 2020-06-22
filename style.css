@@ -17,7 +17,11 @@ body {
     text-align: center;
 }
 
-#scoreboard {
+#meters {
+    display: flex;
+}
+
+strong {
     border-style: ridge;
     border-color: burlywood;
     border-width: 10px;
