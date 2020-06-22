@@ -21,11 +21,12 @@ let spriteSheet = new Image()
 spriteSheet.src = 'Images/duckhunt_various_sheet.png'
 
 // ========= Screen References and scoring/difficulty
-let difficulty = 1     // Difficult initialized to 1, allowing one duck on screen at the beginning
-let ducksOnScreen = []
-let score = 0
-let hasLost = false
-let numLives = 3
+let difficulty = 1         // Difficult initialized to 1, allowing one duck on screen at the beginning
+let ducksOnScreen = []     // Contains references for all ducks on screen
+let score = 0              // Players current score/ how many ducks they have killed
+let hasLost = false        // Reference bolean for determining when a player has lost
+let numLives = 3           // Allowed lives/ ducks not killed before escaping
+let numEsc = 0             // Reference boolean to determine if both ducks have escaped
 /**************************************************/
 
 
@@ -67,7 +68,8 @@ function checkHit(duck, event) {
  * If there are no ducks on screen, pushes 2 new ducks into the ducksOnScreen array
 */
 function generateDucks() {
-    if (ducksOnScreen.length == 0) {
+    if (ducksOnScreen.length == 0 || numEsc == 2) {
+        numEsc = 0
         ducksOnScreen.push(new Duck())
         ducksOnScreen.push(new Duck())
     }
@@ -94,13 +96,13 @@ function startGame() {
                 elem.move()
                 elem.draw()
                 if (elem.numBounces >= elem.allowedBounces && !elem.hasEscaped) {
+                    numEsc++
                     elem.escape()
                     lives.innerHTML = numLives
                 }
             }
         })
         ducksOnScreen = ducksOnScreen.filter(duck => !duck.isDead)
-        ducksOnScreen = ducksOnScreen.filter(duck => !duck.hasEscaped)
         if (numLives <= 0) {hasLost = true}
         if (hasLost) {location.reload()}
         generateDucks()
