@@ -13,7 +13,10 @@ class Duck {
         this.numBounces = 0
         this.pickPositionStart()
         this.pickVelocity()
+        this.allowedBounces = 7
     }
+
+    /************Position and Direction****************/
 
     /*
      * Picks a random direction from the array of possible directions
@@ -31,6 +34,12 @@ class Duck {
         this.velocityX = Math.ceil(Math.random() * 2)
         this.velocityY = Math.ceil(Math.random() * 2)
     }
+    /******************************************************/
+
+
+
+
+    /************Movement and Collision****************/
 
     bounceOffEdge = function(axis){
         if (axis === 'y') {
@@ -40,7 +49,6 @@ class Duck {
             this.velocityX = -this.velocityX
         }
         this.numBounces++
-        console.log(this.numBounces)
     }
 
     move = function() {
@@ -74,6 +82,13 @@ class Duck {
         this.health -= d;
         (this.health <= 0) ? this.die() : console.log('not dead')
     }
+    /***************************************************/
+
+
+
+    
+
+    /************Sprite Rendering and Animation****************/
 
     draw = function() {
         context.drawImage(spriteSheet, 0, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
@@ -83,6 +98,8 @@ class Duck {
     clear = function() {
         context.clearRect(this.x * scale, this.y * scale, scale * 9, scale * 9)
     }
+    /**********************************************************/
+
 
     
 

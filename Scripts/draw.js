@@ -28,6 +28,7 @@ let hasLost = false
 
 
 
+
 /************Calculation Functions****************/
 
 /*
@@ -90,7 +91,7 @@ function startGame() {
                 elem.clear()
                 elem.move()
                 elem.draw()
-                if (elem.numBounces >= 5) {
+                if (elem.numBounces >= elem.allowedBounces) {
                     hasLost = true;
                 }
             }
@@ -108,7 +109,9 @@ function startGame() {
 
 /************Event Listeners****************/
 
-
+/*
+ * Listens for spacebar input, then starts the game loop when detected
+*/
 let isStarted = false;
 window.addEventListener('keydown', function (e) {
     if (e.keyCode == 32) {
@@ -120,6 +123,9 @@ window.addEventListener('keydown', function (e) {
     }
 })
 
+/*
+ * Listens for a click input, Checks the ducks on screen for a hit when detected
+*/
 canvas.addEventListener('click', function (event) {
     shot.play()
     ducksOnScreen.forEach(function (elem) {
