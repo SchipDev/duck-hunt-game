@@ -25,8 +25,8 @@ class Duck {
     }
 
     pickVelocity = function () {
-        this.velocityX = Math.ceil(Math.random() * 2)
-        this.velocityY = Math.ceil(Math.random() * 2)
+        this.velocityX = 1//Math.ceil(Math.random() * 2)
+        this.velocityY = 1//Math.ceil(Math.random() * 2)
     }
     /******************************************************/
 
@@ -71,10 +71,11 @@ class Duck {
         ds1.pause()
         this.isDead = true
         score++
+        numDead++
     }
 
     damage = function (d) {
-        if (canDamage) {
+        if (this.canDamage) {
             this.health -= d;
             (this.health <= 0) ? this.die() : console.log('not dead')
         }

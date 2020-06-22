@@ -15,6 +15,7 @@ mainMusic.volume = 0.2
 let ds1 = document.querySelector('#duck-sound1')
 ds1.loop = true
 let shot = document.querySelector('#shot')
+let bark = document.querySelector('#bark')
 
 // ========= Graphical References
 let spriteSheet = new Image()
@@ -27,6 +28,9 @@ let score = 0              // Players current score/ how many ducks they have ki
 let hasLost = false        // Reference bolean for determining when a player has lost
 let numLives = 3           // Allowed lives/ ducks not killed before escaping
 let numEsc = 0             // Reference boolean to determine if both ducks have escaped
+let numDead = 0            // Reference variable to determine how many onscreen ducks are dead
+let dogAnimStartFrame = 0  // Reference to allow the game to know when to start the dog animation
+let frames = 0             // Reference variable to determine the current number of passed frames
 /**************************************************/
 
 
@@ -68,14 +72,41 @@ function checkHit(duck, event) {
  * If there are no ducks on screen, pushes 2 new ducks into the ducksOnScreen array
 */
 function generateDucks() {
-    if (ducksOnScreen.length == 0 || numEsc == 2) {
+    if (ducksOnScreen.length == 0 || numEsc == 2 || numEsc + numDead == 2) {
         numEsc = 0
+        numDead = 0
         ducksOnScreen.push(new Duck())
         ducksOnScreen.push(new Duck())
     }
 }
 
 /**************************************************/
+
+
+
+function playDogAnimation(currentFrame) {
+    if (dogAnimStartFrame != 0) {
+        if (currentFrame - dogAnimStartFrame == 0) {
+            context.drawImage(spriteSheet, 252, 60, 50, 50, 450, 316, 150, 150)
+        }
+        else if (currentFrame - dogAnimStartFrame == 6) {
+            context.clearRect(450, 316, 200, 200)
+            context.drawImage(spriteSheet, 320, 60, 55, 50, 440, 300, 150, 150)
+            bark.play()
+        }
+        else if (currentFrame - dogAnimStartFrame == 15) {
+            context.clearRect(440, 300, 150, 150)
+            dogAnimStartFrame = 0
+            generateDucks()
+            // console.clear()
+            // console.log(currentFrame)
+            // console.log(dogAnimStartFrame)
+        }
+    }
+}
+
+
+
 
 
 
@@ -90,6 +121,7 @@ function startGame() {
     })
     mainMusic.play()
     window.setInterval(() => {
+        frames++
         ducksOnScreen.forEach(function (elem) {
             if (!elem.isDead) {
                 elem.clear()
@@ -103,9 +135,13 @@ function startGame() {
             }
         })
         ducksOnScreen = ducksOnScreen.filter(duck => !duck.isDead)
-        if (numLives <= 0) {hasLost = true}
-        if (hasLost) {location.reload()}
-        generateDucks()
+        if (numLives <= 0) { hasLost = true }
+        if (hasLost) { location.reload() }
+        if (dogAnimStartFrame === 0 && numDead == 2) {
+            dogAnimStartFrame = frames
+        }
+        playDogAnimation(frames)
+        //generateDucks()
     }, 50);
 }
 /**************************************************/
@@ -126,6 +162,15 @@ window.addEventListener('keydown', function (e) {
             startGame()
             document.querySelector('#start').innerHTML = ''
         }
+    }
+    if (e.keyCode == 77) {
+        playDogAnimation(3);
+    }
+    if (e.keyCode == 78) {
+        playDogAnimation(0)
+    }
+    if (e.keyCode == 66) {
+        playDogAnimation(7)
     }
 })
 

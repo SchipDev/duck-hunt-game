@@ -1,7 +1,7 @@
 
 
 ---------------------Currently Doing-----------------------
-    Adding a loss condition based on how many times the duck bounces off the edge of the screen, Each time a duck bounces 7 times, one life should be subtracted and the duck should escape.
+    Rig an animation system that plays the dog animation when both ducks are killed before allowing the next two to spawn
 
 
 ---------- To Do -----------------------
