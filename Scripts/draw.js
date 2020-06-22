@@ -87,6 +87,9 @@ function generateDucks() {
 function playDogAnimation(currentFrame) {
     if (dogAnimStartFrame != 0) {
         if (currentFrame - dogAnimStartFrame == 0) {
+            context.drawImage(spriteSheet, 252, 60, 50, 24, 450, 329, 110, 95)
+        }
+        else if (currentFrame - dogAnimStartFrame == 3) {
             context.drawImage(spriteSheet, 252, 60, 50, 50, 450, 316, 150, 150)
         }
         else if (currentFrame - dogAnimStartFrame == 6) {
@@ -164,7 +167,7 @@ window.addEventListener('keydown', function (e) {
         }
     }
     if (e.keyCode == 77) {
-        playDogAnimation(3);
+        context.drawImage(spriteSheet, 252, 60, 50, 24, 450, 329, 110, 95)
     }
     if (e.keyCode == 78) {
         playDogAnimation(0)
