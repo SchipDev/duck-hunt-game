@@ -25,8 +25,8 @@ class Duck {
     }
 
     pickVelocity = function () {
-        this.velocityX = 1//Math.ceil(Math.random() * 2)
-        this.velocityY = 1//Math.ceil(Math.random() * 2)
+        this.velocityX = Math.ceil(Math.random() * 1.8)
+        this.velocityY = Math.ceil(Math.random() * 1.8)
     }
     /******************************************************/
 

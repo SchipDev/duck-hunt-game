@@ -1,7 +1,7 @@
 
 
 ---------------------Currently Doing-----------------------
-    Rig an animation system that plays the dog animation when both ducks are killed before allowing the next two to spawn
+    give the ducks death animations
 
 
 ---------- To Do -----------------------

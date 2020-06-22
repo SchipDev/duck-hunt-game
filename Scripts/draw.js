@@ -16,6 +16,7 @@ let ds1 = document.querySelector('#duck-sound1')
 ds1.loop = true
 let shot = document.querySelector('#shot')
 let bark = document.querySelector('#bark')
+let looseMusic = document.querySelector('#looseMusic')
 
 // ========= Graphical References
 let spriteSheet = new Image()
@@ -83,7 +84,10 @@ function generateDucks() {
 /**************************************************/
 
 
-
+/* 
+ * Plays the dog animation based on the frame passed to the function
+ * Generates ducks when animation is complete
+*/
 function playDogAnimation(currentFrame) {
     if (dogAnimStartFrame != 0) {
         if (currentFrame - dogAnimStartFrame == 0) {
@@ -97,13 +101,10 @@ function playDogAnimation(currentFrame) {
             context.drawImage(spriteSheet, 320, 60, 55, 50, 440, 300, 150, 150)
             bark.play()
         }
-        else if (currentFrame - dogAnimStartFrame == 15) {
+        else if (currentFrame - dogAnimStartFrame == 14) {
             context.clearRect(440, 300, 150, 150)
             dogAnimStartFrame = 0
             generateDucks()
-            // console.clear()
-            // console.log(currentFrame)
-            // console.log(dogAnimStartFrame)
         }
     }
 }
@@ -123,7 +124,7 @@ function startGame() {
         elem.draw()
     })
     mainMusic.play()
-    window.setInterval(() => {
+    let loop = window.setInterval(() => {
         frames++
         ducksOnScreen.forEach(function (elem) {
             if (!elem.isDead) {
@@ -139,14 +140,29 @@ function startGame() {
         })
         ducksOnScreen = ducksOnScreen.filter(duck => !duck.isDead)
         if (numLives <= 0) { hasLost = true }
-        if (hasLost) { location.reload() }
+        if (hasLost) {
+            window.clearInterval(loop)
+            context.clearRect(0, 0, canvas.width, canvas.height)
+            mainMusic.pause()
+            ds1.pause()
+            looseMusic.play()
+            context.fillRect(canvas.width/4, canvas.height/4, canvas.width/2, canvas.height/2)
+            context.fillStyle = 'white'
+            context.font = "60px Verdana";
+            context.fillText("Game Over!", canvas.width/3, canvas.height/2, 500)
+            context.font = "30px Verdana";
+            context.fillText("Too many ducks escaped", canvas.width/3, canvas.height/2 + 50, 500)
+        }
         if (dogAnimStartFrame === 0 && numDead == 2) {
             dogAnimStartFrame = frames
         }
         playDogAnimation(frames)
-        //generateDucks()
+        if (numEsc == 2 || numEsc + numDead == 2) {
+            generateDucks()
+        }
     }, 50);
 }
+
 /**************************************************/
 
 
@@ -165,15 +181,6 @@ window.addEventListener('keydown', function (e) {
             startGame()
             document.querySelector('#start').innerHTML = ''
         }
-    }
-    if (e.keyCode == 77) {
-        context.drawImage(spriteSheet, 252, 60, 50, 24, 450, 329, 110, 95)
-    }
-    if (e.keyCode == 78) {
-        playDogAnimation(0)
-    }
-    if (e.keyCode == 66) {
-        playDogAnimation(7)
     }
 })
 
