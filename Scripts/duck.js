@@ -15,6 +15,7 @@ class Duck {
         this.allowedBounces = 7
         this.canDamage = true
         this.hasEscaped = false
+        this.deathAnimStartFrame = 0
     }
 
     /************Position and Direction****************/
@@ -25,8 +26,8 @@ class Duck {
     }
 
     pickVelocity = function () {
-        this.velocityX = Math.ceil(Math.random() * 1.8)
-        this.velocityY = Math.ceil(Math.random() * 1.8)
+        this.velocityX = 1//Math.ceil(Math.random() * 1.6)
+        this.velocityY = 1//Math.ceil(Math.random() * 1.6)
     }
     /******************************************************/
 
@@ -68,10 +69,22 @@ class Duck {
 
     die = function () {
         context.clearRect(this.x * scale, this.y * scale, scale * 9, scale * 9)
+        this.velocityX = 0
+        this.velocityY = 2
         ds1.pause()
         this.isDead = true
         score++
         numDead++
+    }
+
+    deathAnimation = function (frame) {
+        if (this.deathAnimStartFrame == 0) {
+            this.deathAnimStartFrame = frame
+            context.drawImage(spriteSheet, 0, 228, 36, 36, this.x * scale, this.y * scale, 80, 80)
+        }
+        else if (frame - this.deathAnimStartFrame == 4){
+            this.clear()
+        }
     }
 
     damage = function (d) {
@@ -103,13 +116,13 @@ class Duck {
         //context.translate(canvas.width, 0);
         //context.scale(-1, 1);   
         //context.drawImage(spriteSheet, 0, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
-        //context.restore();
+            //context.restore();
         context.drawImage(spriteSheet, 0, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
         ds1.play()
     }
 
     clear = function () {
-        context.clearRect(this.x * scale, this.y * scale, scale * 9, scale * 9)
+        context.clearRect(this.x * scale, this.y * scale, scale * 8, scale * 8)
     }
 
     /**********************************************************/

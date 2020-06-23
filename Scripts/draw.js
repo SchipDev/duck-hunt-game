@@ -16,6 +16,7 @@ let ds1 = document.querySelector('#duck-sound1')
 ds1.loop = true
 let shot = document.querySelector('#shot')
 let bark = document.querySelector('#bark')
+let bark2 = document.querySelector('#bark2')
 let looseMusic = document.querySelector('#looseMusic')
 
 // ========= Graphical References
@@ -32,6 +33,8 @@ let numEsc = 0             // Reference boolean to determine if both ducks have 
 let numDead = 0            // Reference variable to determine how many onscreen ducks are dead
 let dogAnimStartFrame = 0  // Reference to allow the game to know when to start the dog animation
 let frames = 0             // Reference variable to determine the current number of passed frames
+let deadDucks = []
+let startAnimFinished = false
 /**************************************************/
 
 
@@ -109,6 +112,78 @@ function playDogAnimation(currentFrame) {
     }
 }
 
+function playStartAnimation(currFrame) {
+    // Frame 1 context.drawImage(spriteSheet, 0, 0, 60, 50, 300, 300, 110, 95)
+    // Frame 2 context.drawImage(spriteSheet, 60, 0, 60, 50, 300, 300, 110, 95)
+    // Frame 3 context.drawImage(spriteSheet, 120, 0, 60, 50, 300, 300, 110, 95)
+    // frame 4 context.drawImage(spriteSheet, 180, 0, 60, 50, 300, 300, 110, 95)
+    // frame 5 context.drawImage(spriteSheet, 240, 0, 60, 50, 300, 300, 110, 95)
+    if (currFrame === 0) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 0, 0, 60, 50, 20, 380, 110, 95)
+    }
+    else if (currFrame === 3) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 60, 0, 60, 50, 60, 379, 110, 95)
+    }
+    else if (currFrame == 6) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 120, 0, 60, 50, 100, 377, 110, 95)
+    }
+    else if (currFrame === 9) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 180, 0, 60, 50, 140, 375, 110, 95)
+    }
+    else if (currFrame == 12) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 240, 0, 60, 50, 180, 373, 110, 95)
+    }
+    else if (currFrame === 15) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 0, 0, 60, 50, 220, 370, 110, 95)
+    }
+    else if (currFrame === 18) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 60, 0, 60, 50, 260, 369, 110, 95)
+    }
+    else if (currFrame === 21) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 120, 0, 60, 50, 300, 369, 110, 95)
+        bark2.play()
+    }
+
+    // Jump Animation frames
+    else if (currFrame === 24) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(spriteSheet, 0, 50, 60, 60, 330, 369, 110, 95)
+    }
+    else if (currFrame === 27) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 60, 50, 60, 60, 340, 350, 110, 95)
+    }
+    else if (currFrame === 29) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 60, 50, 60, 60, 345, 345, 110, 95)
+    }
+    else if (currFrame === 31) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 120, 50, 60, 60, 350, 339, 110, 95)
+    }
+    else if (currFrame === 33) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 120, 50, 60, 60, 355, 345, 105, 90)
+    }
+    else if (currFrame === 36) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(spriteSheet, 120, 50, 60, 60, 357, 352, 103, 88)
+    }
+    else if (currFrame >= 37) {
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        startAnimFinished = true
+    }
+
+}
+
 
 
 
@@ -125,40 +200,47 @@ function startGame() {
     })
     mainMusic.play()
     let loop = window.setInterval(() => {
+        if (!startAnimFinished) playStartAnimation(frames)
         frames++
-        ducksOnScreen.forEach(function (elem) {
-            if (!elem.isDead) {
-                elem.clear()
-                elem.move()
-                elem.draw()
-                if (elem.numBounces >= elem.allowedBounces && !elem.hasEscaped) {
-                    numEsc++
-                    elem.escape()
-                    lives.innerHTML = numLives
+        if (startAnimFinished) {
+            ducksOnScreen.forEach(function (elem) {
+                if (!elem.isDead) {
+                    elem.clear()
+                    elem.move()
+                    elem.draw()
+                    if (elem.numBounces >= elem.allowedBounces && !elem.hasEscaped) {
+                        numEsc++
+                        elem.escape()
+                        lives.innerHTML = numLives
+                    }
                 }
+            })
+            // deadDucks = ducksOnScreen.filter(duck => duck.isDead)
+            // deadDucks.forEach(function(duck) {
+            //     duck.deathAnimation(frames)
+            // })
+            ducksOnScreen = ducksOnScreen.filter(duck => !duck.isDead)
+            if (numLives <= 0) { hasLost = true }
+            if (hasLost) {
+                window.clearInterval(loop)
+                context.clearRect(0, 0, canvas.width, canvas.height)
+                mainMusic.pause()
+                ds1.pause()
+                looseMusic.play()
+                context.fillRect(canvas.width / 4, canvas.height / 4, canvas.width / 2, canvas.height / 2)
+                context.fillStyle = 'white'
+                context.font = "60px Verdana";
+                context.fillText("Game Over!", canvas.width / 3, canvas.height / 2, 500)
+                context.font = "30px Verdana";
+                context.fillText("Too many ducks escaped", canvas.width / 3, canvas.height / 2 + 50, 500)
             }
-        })
-        ducksOnScreen = ducksOnScreen.filter(duck => !duck.isDead)
-        if (numLives <= 0) { hasLost = true }
-        if (hasLost) {
-            window.clearInterval(loop)
-            context.clearRect(0, 0, canvas.width, canvas.height)
-            mainMusic.pause()
-            ds1.pause()
-            looseMusic.play()
-            context.fillRect(canvas.width/4, canvas.height/4, canvas.width/2, canvas.height/2)
-            context.fillStyle = 'white'
-            context.font = "60px Verdana";
-            context.fillText("Game Over!", canvas.width/3, canvas.height/2, 500)
-            context.font = "30px Verdana";
-            context.fillText("Too many ducks escaped", canvas.width/3, canvas.height/2 + 50, 500)
-        }
-        if (dogAnimStartFrame === 0 && numDead == 2) {
-            dogAnimStartFrame = frames
-        }
-        playDogAnimation(frames)
-        if (numEsc == 2 || numEsc + numDead == 2) {
-            generateDucks()
+            if (dogAnimStartFrame === 0 && numDead == 2) {
+                dogAnimStartFrame = frames
+            }
+            playDogAnimation(frames)
+            if (numEsc == 2 || numEsc + numDead == 2) {
+                generateDucks()
+            }
         }
     }, 50);
 }
@@ -181,6 +263,10 @@ window.addEventListener('keydown', function (e) {
             startGame()
             document.querySelector('#start').innerHTML = ''
         }
+    }
+    if (e.keyCode == 77) {
+        console.log('hit')
+        playStartAnimation(1005)
     }
 })
 
