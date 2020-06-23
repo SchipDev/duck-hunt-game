@@ -22,6 +22,8 @@ let looseMusic = document.querySelector('#looseMusic')
 // ========= Graphical References
 let spriteSheet = new Image()
 spriteSheet.src = 'Images/duckhunt_various_sheet.png'
+let flippedDuck = new Image()
+flippedDuck.src = 'Images/flipped-duck.png'
 
 // ========= Screen References and scoring/difficulty
 let difficulty = 1         // Difficult initialized to 1, allowing one duck on screen at the beginning
@@ -230,9 +232,9 @@ function startGame() {
                 context.fillRect(canvas.width / 4, canvas.height / 4, canvas.width / 2, canvas.height / 2)
                 context.fillStyle = 'white'
                 context.font = "60px Verdana";
-                context.fillText("Game Over!", canvas.width / 3, canvas.height / 2, 500)
+                context.fillText("Game Over!", canvas.width / 3 - 20, canvas.height / 2, 500)
                 context.font = "30px Verdana";
-                context.fillText("Too many ducks escaped", canvas.width / 3, canvas.height / 2 + 50, 500)
+                context.fillText("Too many ducks escaped", canvas.width / 3 - 20, canvas.height / 2 + 50, 500)
             }
             if (dogAnimStartFrame === 0 && numDead == 2) {
                 dogAnimStartFrame = frames

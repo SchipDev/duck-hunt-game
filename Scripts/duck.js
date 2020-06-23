@@ -26,8 +26,8 @@ class Duck {
     }
 
     pickVelocity = function () {
-        this.velocityX = 1//Math.ceil(Math.random() * 1.6)
-        this.velocityY = 1//Math.ceil(Math.random() * 1.6)
+        this.velocityX = Math.ceil(Math.random() * 1.6)
+        this.velocityY = Math.ceil(Math.random() * 1.6)
     }
     /******************************************************/
 
@@ -82,7 +82,7 @@ class Duck {
             this.deathAnimStartFrame = frame
             context.drawImage(spriteSheet, 0, 228, 36, 36, this.x * scale, this.y * scale, 80, 80)
         }
-        else if (frame - this.deathAnimStartFrame == 4){
+        else if (frame - this.deathAnimStartFrame == 4) {
             this.clear()
         }
     }
@@ -112,12 +112,12 @@ class Duck {
     /************Sprite Rendering and Animation****************/
 
     draw = function () {
-        //context.save();
-        //context.translate(canvas.width, 0);
-        //context.scale(-1, 1);   
-        //context.drawImage(spriteSheet, 0, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
-            //context.restore();
-        context.drawImage(spriteSheet, 0, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+        if (this.velocityX < 0) {
+            context.drawImage(flippedDuck, flippedDuck.width - 36, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+        }
+        else {
+            context.drawImage(spriteSheet, 0, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+        }
         ds1.play()
     }
 
