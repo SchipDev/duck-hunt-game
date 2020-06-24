@@ -15,7 +15,8 @@ class Duck {
         this.allowedBounces = 7
         this.canDamage = true
         this.hasEscaped = false
-        this.deathAnimStartFrame = 0
+        this.flyAnimStartFrame = 0
+        this.currFlyAnimFrame = 0
     }
 
     /************Position and Direction****************/
@@ -26,8 +27,8 @@ class Duck {
     }
 
     pickVelocity = function () {
-        this.velocityX = Math.ceil(Math.random() * 1.6)
-        this.velocityY = Math.ceil(Math.random() * 1.6)
+        this.velocityX = 0.5//Math.ceil(Math.random() * 1.6)
+        this.velocityY = 0.5//Math.ceil(Math.random() * 1.6)
     }
     /******************************************************/
 
@@ -111,12 +112,52 @@ class Duck {
 
     /************Sprite Rendering and Animation****************/
 
-    draw = function () {
-        if (this.velocityX < 0) {
-            context.drawImage(flippedDuck, flippedDuck.width - 36, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+    playFlyRightAnim = function() {
+        if (this.currFlyAnimFrame < 3) {
+            context.drawImage(spriteSheet, 0, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+            this.currFlyAnimFrame++
+        }
+        else if (this.currFlyAnimFrame >= 3 && this.currFlyAnimFrame < 6) {
+            context.drawImage(spriteSheet, 36, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+            this.currFlyAnimFrame++
+        }
+        else if (this.currFlyAnimFrame >= 6 && this.currFlyAnimFrame < 9) {
+            context.drawImage(spriteSheet, 72, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+            this.currFlyAnimFrame++
         }
         else {
             context.drawImage(spriteSheet, 0, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+            this.currFlyAnimFrame = 0
+        }
+    }
+
+    playFlyLeftAnim = function(currentFrame) {
+        if (this.currFlyAnimFrame < 3) {
+            context.drawImage(flippedDuckSprites, flippedDuckSprites.width - 36, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+            this.currFlyAnimFrame++
+        }
+        else if (this.currFlyAnimFrame >= 3 && this.currFlyAnimFrame < 6) {
+            context.drawImage(flippedDuckSprites, flippedDuckSprites.width - 72, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+            this.currFlyAnimFrame++
+        }
+        else if (this.currFlyAnimFrame >= 6 && this.currFlyAnimFrame < 9) {
+            context.drawImage(flippedDuckSprites, flippedDuckSprites.width - 108, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+            this.currFlyAnimFrame++
+        }
+        else {
+            context.drawImage(flippedDuckSprites, flippedDuckSprites.width - 36, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+            this.currFlyAnimFrame = 0
+        }
+    }
+
+    draw = function () {
+        if (this.velocityX < 0) {
+            this.playFlyLeftAnim()
+            //context.drawImage(flippedDuck, flippedDuck.width - 36, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
+        }
+        else {
+            this.playFlyRightAnim()
+            //context.drawImage(spriteSheet, 0, 120, 36, 36, this.x * scale, this.y * scale, 80, 80)
         }
         ds1.play()
     }

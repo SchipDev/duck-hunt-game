@@ -9,6 +9,7 @@ body {
     background-image: url("Images/drawisland.png");
     background-repeat: no-repeat;
     background-size: 1100px 500px;
+    cursor: url(Images/crosshair7.png) 37 37,auto;
 }
 
 #start {

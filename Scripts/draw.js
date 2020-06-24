@@ -24,6 +24,8 @@ let spriteSheet = new Image()
 spriteSheet.src = 'Images/duckhunt_various_sheet.png'
 let flippedDuck = new Image()
 flippedDuck.src = 'Images/flipped-duck.png'
+let flippedDuckSprites = new Image()
+flippedDuckSprites.src = 'Images/Flipped-duck-sprites.png'
 
 // ========= Screen References and scoring/difficulty
 let difficulty = 1         // Difficult initialized to 1, allowing one duck on screen at the beginning
