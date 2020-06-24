@@ -12,7 +12,7 @@ let ias = document.querySelector('#ias')
 // ========= Audio References
 let mainMusic = document.getElementById("music-main")
 mainMusic.loop = true
-mainMusic.volume = 0.2
+mainMusic.volume = 0.4
 let ds1 = document.querySelector('#duck-sound1')
 ds1.loop = true
 let shot = document.querySelector('#shot')
@@ -201,11 +201,25 @@ function checkKillStreak(currFrame) {
             ias.style.visibility = 'visible'
         }
     }
+    else if ((currFrame - killMusicStart) == 130) {
+        killMusic.volume = 0.7
+    }
+    else if ((currFrame - killMusicStart) == 140) {
+        killMusic.volume = 0.5
+    }
+    else if ((currFrame - killMusicStart) == 150) {
+        killMusic.volume = 0.3
+    }
     else if ((currFrame - killMusicStart) == 160) {
         killMusic.pause()
+        mainMusic.volume = 0.2
         mainMusic.play()
-        killMusicStart = 0
         ias.style.visibility = 'hidden'
+        killMusic.volume = 1.0
+    }
+    else if ((currFrame - killMusicStart) == 170) {
+        mainMusic.volume = 0.4
+        killMusicStart = 0
     }
 }
 
