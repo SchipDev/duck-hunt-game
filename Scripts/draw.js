@@ -28,17 +28,17 @@ let flippedDuckSprites = new Image()
 flippedDuckSprites.src = 'Images/Flipped-duck-sprites.png'
 
 // ========= Screen References and scoring/difficulty
-let difficulty = 1         // Difficult initialized to 1, allowing one duck on screen at the beginning
-let ducksOnScreen = []     // Contains references for all ducks on screen
-let score = 0              // Players current score/ how many ducks they have killed
-let hasLost = false        // Reference bolean for determining when a player has lost
-let numLives = 3           // Allowed lives/ ducks not killed before escaping
-let numEsc = 0             // Reference boolean to determine if both ducks have escaped
-let numDead = 0            // Reference variable to determine how many onscreen ducks are dead
-let dogAnimStartFrame = 0  // Reference to allow the game to know when to start the dog animation
-let frames = 0             // Reference variable to determine the current number of passed frames
-let deadDucks = []
-let startAnimFinished = false
+let difficulty = 1             // Difficult initialized to 1, allowing one duck on screen at the beginning
+let ducksOnScreen = []         // Contains references for all ducks on screen
+let score = 0                  // Players current score/ how many ducks they have killed
+let hasLost = false            // Reference bolean for determining when a player has lost
+let numLives = 3               // Allowed lives/ ducks not killed before escaping
+let numEsc = 0                 // Reference boolean to determine if both ducks have escaped
+let numDead = 0                // Reference variable to determine how many onscreen ducks are dead
+let dogAnimStartFrame = 0      // Reference to allow the game to know when to start the dog animation
+let frames = 0                 // Reference variable to determine the current number of passed frames
+let deadDucks = []             // Reference for all dead ducks in existence
+let startAnimFinished = false  // Reference to tell the game loop when to start
 /**************************************************/
 
 
@@ -219,10 +219,6 @@ function startGame() {
                     }
                 }
             })
-            // deadDucks = ducksOnScreen.filter(duck => duck.isDead)
-            // deadDucks.forEach(function(duck) {
-            //     duck.deathAnimation(frames)
-            // })
             ducksOnScreen = ducksOnScreen.filter(duck => !duck.isDead)
             if (numLives <= 0) { hasLost = true }
             if (hasLost) {
