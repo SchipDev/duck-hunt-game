@@ -7,6 +7,7 @@ const columns = canvas.width / scale;
 let directions = ['n', 's', 'e', 'w']
 let scoreBoard = document.querySelector('#scoreboard')
 let lives = document.querySelector('#lives')
+let ias = document.querySelector('#ias')
 
 // ========= Audio References
 let mainMusic = document.getElementById("music-main")
@@ -18,6 +19,8 @@ let shot = document.querySelector('#shot')
 let bark = document.querySelector('#bark')
 let bark2 = document.querySelector('#bark2')
 let looseMusic = document.querySelector('#looseMusic')
+let killMusic = document.querySelector('#killMusic')
+let hit = document.querySelector('#hit')
 
 // ========= Graphical References
 let spriteSheet = new Image()
@@ -39,6 +42,7 @@ let dogAnimStartFrame = 0      // Reference to allow the game to know when to st
 let frames = 0                 // Reference variable to determine the current number of passed frames
 let deadDucks = []             // Reference for all dead ducks in existence
 let startAnimFinished = false  // Reference to tell the game loop when to start
+let killMusicStart = 0
 /**************************************************/
 
 
@@ -185,7 +189,24 @@ function playStartAnimation(currFrame) {
         context.clearRect(0, 0, canvas.width, canvas.height)
         startAnimFinished = true
     }
+}
 
+function checkKillStreak(currFrame) {
+    if (score % 12 == 0 && score != 0) {
+        if (killMusicStart == 0) {
+            killMusicStart = currFrame
+            mainMusic.pause()
+            hit.play()
+            killMusic.play()
+            ias.style.visibility = 'visible'
+        }
+    }
+    else if ((currFrame - killMusicStart) == 160) {
+        killMusic.pause()
+        mainMusic.play()
+        killMusicStart = 0
+        ias.style.visibility = 'hidden'
+    }
 }
 
 
@@ -238,6 +259,7 @@ function startGame() {
                 dogAnimStartFrame = frames
             }
             playDogAnimation(frames)
+            checkKillStreak(frames)
             if (numEsc == 2 || numEsc + numDead == 2) {
                 generateDucks()
             }

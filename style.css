@@ -31,4 +31,19 @@ strong {
     font-size: 30px;
 }
 
+#iasdiv {
+    margin-top: 40px;
+}
+
+#ias {
+    font-size: 60px;
+    text-align: center;
+    margin-top: 10px;
+    color: darkred;
+    background-color: black;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    border-color: goldenrod;
+    visibility: hidden;
+}
+
 
