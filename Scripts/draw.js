@@ -45,7 +45,7 @@ let startAnimFinished = false  // Reference to tell the game loop when to start
 let killMusicStart = 0         // Tells functions when the kill music has started
 let difficultyScale = 2        // Difficulty scaling controls how fast ducks ove
 let isOnStartScreen = false    // Allows input on the startScreen
-let killBonusText = ['ITS A SLAUGHTER', 'KILLTACULAR', 'KILLAPALUZA', 'KILLMAGEDON', 'RAMPAGE']
+let killBonusText = ['ITS A SLAUGHTER', 'KILLTACULAR', 'KILLAPALUZA', 'KILLMAGEDON', 'RAMPAGE', 'OVERKILL']
 /**************************************************/
 
 
@@ -201,8 +201,8 @@ function checkKillStreak(currFrame) {
             mainMusic.pause()
             hit.play()
             killMusic.play()
-            // let rand = Math.floor(Math.random() * killBonusText.length)
-            // ias.innderHTML = killBonusText[rand]
+            let rand = Math.floor(Math.random() * killBonusText.length)
+            ias.innerHTML = killBonusText[rand]
             ias.style.visibility = 'visible'
         }
     }
