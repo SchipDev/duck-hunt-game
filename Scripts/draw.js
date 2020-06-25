@@ -44,7 +44,8 @@ let deadDucks = []             // Reference for all dead ducks in existence
 let startAnimFinished = false  // Reference to tell the game loop when to start
 let killMusicStart = 0         // Tells functions when the kill music has started
 let difficultyScale = 2        // Difficulty scaling controls how fast ducks ove
-let isOnStartScreen = false
+let isOnStartScreen = false    // Allows input on the startScreen
+let killBonusText = ['ITS A SLAUGHTER', 'KILLTACULAR', 'KILLAPALUZA', 'KILLMAGEDON', 'RAMPAGE']
 /**************************************************/
 
 
@@ -200,6 +201,8 @@ function checkKillStreak(currFrame) {
             mainMusic.pause()
             hit.play()
             killMusic.play()
+            // let rand = Math.floor(Math.random() * killBonusText.length)
+            // ias.innderHTML = killBonusText[rand]
             ias.style.visibility = 'visible'
         }
     }
@@ -231,7 +234,7 @@ function loadStartScreen() {
     context.font = "50px Verdana";
     context.fillText("Select Difficulty", canvas.width / 3 - 20, canvas.height / 2, 500)
     context.font = "30px Verdana";
-    context.fillText("Number keys 2-4", canvas.width / 3 - 20, canvas.height / 2 + 50, 500)
+    context.fillText("Number keys 2-5", canvas.width / 3 - 20, canvas.height / 2 + 50, 500)
 }
 
 
@@ -314,7 +317,7 @@ window.addEventListener('keydown', function (e) {
             document.querySelector('#start').innerHTML = ''
         }
     }
-    else if (e.keyCode == 50 || e.keyCode == 51 || e.keyCode == 52) {
+    else if (e.keyCode == 50 || e.keyCode == 51 || e.keyCode == 52 || e.keyCode == 53) {
         if (isOnStartScreen) {
             difficultyScale = e.keyCode - 48
             context.clearRect(0, 0, canvas.width, canvas.height)
