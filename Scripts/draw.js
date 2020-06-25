@@ -283,6 +283,7 @@ function startGame() {
                 context.fillText("Game Over!", canvas.width / 3 - 20, canvas.height / 2, 500)
                 context.font = "30px Verdana";
                 context.fillText("Too many ducks escaped", canvas.width / 3 - 20, canvas.height / 2 + 50, 500)
+                document.querySelector('#start').innerHTML = 'Press Space To Retry'
             }
             if (dogAnimStartFrame === 0 && numDead == 2) {
                 dogAnimStartFrame = frames
@@ -312,9 +313,10 @@ window.addEventListener('keydown', function (e) {
         if (!isStarted) {
             loadStartScreen()
             isOnStartScreen = true
-            //isStarted = true
-            //startGame()
             document.querySelector('#start').innerHTML = ''
+        }
+        if (hasLost) {
+            location.reload()
         }
     }
     else if (e.keyCode == 50 || e.keyCode == 51 || e.keyCode == 52 || e.keyCode == 53) {
