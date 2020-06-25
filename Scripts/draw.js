@@ -42,7 +42,9 @@ let dogAnimStartFrame = 0      // Reference to allow the game to know when to st
 let frames = 0                 // Reference variable to determine the current number of passed frames
 let deadDucks = []             // Reference for all dead ducks in existence
 let startAnimFinished = false  // Reference to tell the game loop when to start
-let killMusicStart = 0
+let killMusicStart = 0         // Tells functions when the kill music has started
+let difficultyScale = 2        // Difficulty scaling controls how fast ducks ove
+let isOnStartScreen = false
 /**************************************************/
 
 
@@ -223,6 +225,15 @@ function checkKillStreak(currFrame) {
     }
 }
 
+function loadStartScreen() {
+    context.fillRect(canvas.width / 4, canvas.height / 4, canvas.width / 2, canvas.height / 2)
+    context.fillStyle = 'white'
+    context.font = "50px Verdana";
+    context.fillText("Select Difficulty", canvas.width / 3 - 20, canvas.height / 2, 500)
+    context.font = "30px Verdana";
+    context.fillText("Number keys 2-4", canvas.width / 3 - 20, canvas.height / 2 + 50, 500)
+}
+
 
 
 
@@ -262,6 +273,7 @@ function startGame() {
                 mainMusic.pause()
                 ds1.pause()
                 looseMusic.play()
+                context.fillStyle = 'black'
                 context.fillRect(canvas.width / 4, canvas.height / 4, canvas.width / 2, canvas.height / 2)
                 context.fillStyle = 'white'
                 context.font = "60px Verdana";
@@ -295,14 +307,21 @@ let isStarted = false;
 window.addEventListener('keydown', function (e) {
     if (e.keyCode == 32) {
         if (!isStarted) {
-            isStarted = true
-            startGame()
+            loadStartScreen()
+            isOnStartScreen = true
+            //isStarted = true
+            //startGame()
             document.querySelector('#start').innerHTML = ''
         }
     }
-    if (e.keyCode == 77) {
-        console.log('hit')
-        playStartAnimation(1005)
+    else if (e.keyCode == 50 || e.keyCode == 51 || e.keyCode == 52) {
+        if (isOnStartScreen) {
+            difficultyScale = e.keyCode - 48
+            context.clearRect(0, 0, canvas.width, canvas.height)
+            isOnStartScreen = false
+            isStarted = true
+            startGame()
+        }
     }
 })
 
@@ -318,6 +337,7 @@ canvas.addEventListener('click', function (event) {
         scoreBoard.innerHTML = score
     })
 })
+
 /**************************************************/
 
 
